@@ -20,10 +20,8 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "Démarrage du serveur..." -ForegroundColor Yellow
     Write-Host "Le serveur sera accessible sur localhost:1099" -ForegroundColor Cyan
     Write-Host "Appuyez sur Ctrl+C pour arrêter le serveur" -ForegroundColor Cyan
-    Write-Host "----------------------------------------" -ForegroundColor White
-    
-    # Démarrer le serveur
-    mvn exec:java -Dexec.mainClass="fstm.distibutedsystem.ChatServer"
+    Write-Host "----------------------------------------" -ForegroundColor White    # Démarrer le serveur
+    mvn exec:java -Pserver
 } else {
     Write-Host "Erreur de compilation!" -ForegroundColor Red
     exit 1

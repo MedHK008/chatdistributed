@@ -27,4 +27,4 @@ Write-Host "Assurez-vous que le serveur est démarré avant de continuer" -Foreg
 Write-Host "----------------------------------------" -ForegroundColor White
 
 # Démarrer le client
-mvn exec:java -Dexec.mainClass="fstm.distibutedsystem.ChatClient"
+mvn exec:java -Pclient
