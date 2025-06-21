@@ -17,6 +17,15 @@ Ce projet implémente un système de chat distribué utilisant Java RMI avec l'a
 - Envoi et réception de messages
 - Affichage des messages avec timestamps Lamport
 - Commandes intégrées (/quit, /history, /clients)
+- **Interface graphique Swing** avec fenêtre de chat moderne
+
+### Client GUI (Swing)
+- Interface graphique intuitive avec fenêtres de chat
+- Affichage en temps réel des messages de tous les utilisateurs
+- Boîte de dialogue de connexion au démarrage
+- Historique et liste des clients dans des fenêtres séparées
+- Coloration différentielle des messages (vos messages vs autres)
+- Affichage de l'horloge Lamport en temps réel
 
 ### Algorithme de Lamport
 - Horodatage logique pour tous les événements
@@ -30,7 +39,8 @@ src/main/java/fstm/distibutedsystem/
 ├── Main.java                    # Point d'entrée principal
 ├── ChatDemo.java               # Démonstration du système
 ├── ChatServer.java             # Implémentation du serveur
-├── ChatClient.java             # Implémentation du client
+├── ChatClient.java             # Implémentation du client console
+├── ChatClientGUI.java          # Implémentation du client GUI (Swing)
 ├── ChatServerInterface.java    # Interface RMI du serveur
 ├── ChatClientInterface.java    # Interface RMI du client
 ├── Message.java                # Classe des messages
@@ -60,7 +70,7 @@ java -cp target/classes fstm.distibutedsystem.ChatServer
 java -cp target/classes fstm.distibutedsystem.ChatDemo server
 ```
 
-### Démarrage d'un Client
+### Démarrage d'un Client Console
 ```bash
 # Option 1: Via Maven
 mvn exec:java -Dexec.mainClass="fstm.distibutedsystem.ChatClient"
@@ -72,15 +82,37 @@ java -cp target/classes fstm.distibutedsystem.ChatClient
 java -cp target/classes fstm.distibutedsystem.ChatDemo client
 ```
 
+### Démarrage d'un Client GUI (Recommandé)
+```bash
+# Option 1: Via Maven avec profil
+mvn exec:java -Pclient-gui
+
+# Option 2: Via Java direct
+java -cp target/classes fstm.distibutedsystem.ChatClientGUI
+
+# Option 3: Via script PowerShell (Windows)
+.\start-client-gui.ps1
+```
+
 ## Utilisation
 
 ### Démarrage du Système
 1. **Démarrer le serveur** en premier
-2. **Démarrer un ou plusieurs clients**
-3. **Saisir le nom du client** quand demandé
-4. **Spécifier l'adresse et le port du serveur** (par défaut: localhost:1099)
+2. **Démarrer un ou plusieurs clients** (GUI recommandé)
+3. **Interface GUI** : Une boîte de dialogue de connexion s'ouvre automatiquement
+4. **Interface Console** : Saisir le nom du client quand demandé
+5. **Spécifier l'adresse et le port du serveur** (par défaut: localhost:1099)
 
-### Commandes Client
+### Interface Graphique (GUI)
+L'interface Swing offre une expérience moderne :
+- **Fenêtre de connexion** : Saisie du nom, serveur et port
+- **Zone de chat principale** : Affichage en temps réel des messages
+- **Barre de statut** : Statut de connexion et horloge Lamport
+- **Champ de saisie** : Zone de texte pour taper les messages
+- **Boutons d'action** : Historique et liste des clients connectés
+- **Coloration des messages** : Distinction visuelle entre vos messages et ceux des autres
+
+### Commandes Client Console
 - Tapez votre message et appuyez sur Entrée pour l'envoyer
 - `/quit` - Quitter le chat
 - `/history` - Afficher l'historique des messages (ordre Lamport)
@@ -166,14 +198,17 @@ L'algorithme de Lamport assure un ordre causal cohérent des événements dans u
 - Timestamps croissants selon l'algorithme
 - Cohérence entre tous les clients connectés
 
-## Améliorations Possibles
+### Améliorations Possibles
 
 ### Fonctionnalités Avancées
 - Sauvegarde persistante de l'historique
 - Salles de chat multiples
 - Messages privés entre clients
-- Interface graphique (Swing/JavaFX)
+- ✅ **Interface graphique (Swing)** - Implémentée
 - Authentification des utilisateurs
+- Émojis et formatting des messages
+- Notifications système
+- Transfert de fichiers
 
 ### Optimisations Techniques
 - Compression des messages
@@ -181,6 +216,7 @@ L'algorithme de Lamport assure un ordre causal cohérent des événements dans u
 - Configuration via fichier de propriétés
 - Logging avancé avec framework (Log4j)
 - Métriques de performance
+- Thèmes personnalisables pour l'interface GUI
 
 ## Licence
 Projet éducatif - FSTM Distributed Systems

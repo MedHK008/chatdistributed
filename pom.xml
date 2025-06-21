@@ -89,9 +89,7 @@
                 <version>3.0.0</version>
             </plugin>
         </plugins>
-    </build>
-
-    <!-- Profils pour différents modes d'exécution -->
+    </build>    <!-- Profils pour différents modes d'exécution -->
     <profiles>
         <profile>
             <id>server</id>
@@ -103,6 +101,12 @@
             <id>client</id>
             <properties>
                 <exec.mainClass>fstm.distibutedsystem.ChatClient</exec.mainClass>
+            </properties>
+        </profile>
+        <profile>
+            <id>client-gui</id>
+            <properties>
+                <exec.mainClass>fstm.distibutedsystem.ChatClientGUI</exec.mainClass>
             </properties>
         </profile>
         <profile>
