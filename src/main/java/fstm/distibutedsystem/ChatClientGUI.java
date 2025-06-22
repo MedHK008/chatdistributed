@@ -244,7 +244,6 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
         } catch (java.rmi.RemoteException e) {
             updateStatus("Erreur RMI", Color.RED);
             appendSystemMessage("Erreur RMI: " + e.getMessage());
-            appendSystemMessage("Cause possible: " + (e.getCause() != null ? e.getCause().getMessage() : "Inconnue"));
             throw e;
         } catch (Exception e) {
             updateStatus("Erreur de connexion", Color.RED);

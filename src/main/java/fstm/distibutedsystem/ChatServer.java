@@ -264,7 +264,6 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
             Thread.currentThread().join();
         } catch (java.rmi.RemoteException e) {
             System.err.println("Erreur RMI du serveur: " + e.getMessage());
-            e.printStackTrace();
         } catch (java.lang.InterruptedException e) {
             System.err.println("Le serveur a été interrompu: " + e.getMessage());
             Thread.currentThread().interrupt();
