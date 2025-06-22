@@ -23,8 +23,8 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
     private final LamportClock lamportClock;
     private final Object messageLock = new Object();
     
-    public ChatServer() throws RemoteException {
-        super();
+    public ChatServer(int exportPort) throws RemoteException {
+        super(exportPort);
         this.clients = new ConcurrentHashMap<>();
         this.clientNames = new ConcurrentHashMap<>();
         this.messageHistory = new CopyOnWriteArrayList<>();
@@ -35,6 +35,46 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
     
     @Override
     public String registerClient(ChatClientInterface clientCallback, String clientName) throws RemoteException {
+        // Vérifier la disponibilité du nom.
+        // Si le même nom existe déjà, on teste d'abord si la référence RMI du client
+        // est encore valide. Si elle ne l'est plus, on le supprime afin d'autoriser
+        // la reconnexion sous le même nom.
+        if (clientNames.containsValue(clientName)) {
+            String existingId = null;
+            for (Map.Entry<String, String> entry : clientNames.entrySet()) {
+                if (entry.getValue().equals(clientName)) {
+                    existingId = entry.getKey();
+                    break;
+                }
+            }
+            boolean stillAlive = true;
+            if (existingId != null) {
+                ChatClientInterface existingClient = clients.get(existingId);
+                if (existingClient == null) {
+                    stillAlive = false;
+                } else {
+                    try {
+                        // Appel anodin pour tester la connexion.
+                        existingClient.getClientName();
+                    } catch (RemoteException e) {
+                        stillAlive = false;
+                    }
+                }
+                // Si le client est hors-ligne, on le désinscrit proprement.
+                if (!stillAlive) {
+                    try {
+                        unregisterClient(existingId);
+                    } catch (RemoteException e) {
+                        // Ignorer, nous essayons déjà de nettoyer une référence morte.
+                    }
+                }
+            }
+            // Après nettoyage, vérifier à nouveau si le nom est encore pris.
+            if (clientNames.containsValue(clientName)) {
+                throw new RemoteException("Le nom \"" + clientName + "\" est déjà utilisé par un autre client.");
+            }
+        }
+        
         String clientId = UUID.randomUUID().toString();
         
         clients.put(clientId, clientCallback);
@@ -198,7 +238,9 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
             
             // Create RMI registry
             Registry registry = LocateRegistry.createRegistry(port);
-            ChatServer server = new ChatServer();
+            // Utilise le port 1100 pour l'exportation RMI
+            int exportPort = 1100;
+            ChatServer server = new ChatServer(exportPort);
             registry.rebind(serverName, server);
             
             System.out.println("Serveur de chat démarré et enregistré dans le registre RMI sous le nom : " + serverName + " sur le port : " + port);

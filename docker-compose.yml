@@ -2,9 +2,13 @@ services:
   chat-server:
     build: .
     container_name: chat-distributed-server
-    network_mode: host  # Use host networking for RMI compatibility
+    ports:
+      - "1099:1099"
+      - "1100:1100"
     environment:
-      - JAVA_OPTS=-Djava.rmi.server.hostname=localhost -Djava.net.preferIPv4Stack=true -Djava.rmi.server.useLocalHostname=true
+      # Utilise la variable CHAT_HOST (définie à l'exécution) ou 127.0.0.1 par défaut
+      - JAVA_OPTS=-Djava.rmi.server.hostname=${CHAT_HOST:-127.0.0.1} -Djava.net.preferIPv4Stack=true -Djava.rmi.server.useLocalHostname=true
+      - RMI_HOSTNAME=${CHAT_HOST:-127.0.0.1}      
       - SERVER_PORT=1099
       - SERVER_NAME=ChatServer
     restart: unless-stopped

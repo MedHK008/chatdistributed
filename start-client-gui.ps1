@@ -27,5 +27,16 @@ Write-Host "Assurez-vous que le serveur est démarré avant de continuer" -Foreg
 Write-Host "Une fenêtre de connexion va s'ouvrir" -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor White
 
+# Charger les variables du fichier .env dans l'environnement du processus
+if (Test-Path ".env") {
+    Get-Content .env | ForEach-Object {
+        if ($_ -match "^\s*([A-Za-z_][A-Za-z0-9_]*)=(.+)$") {
+            $name = $matches[1]
+            $value = $matches[2]
+            [System.Environment]::SetEnvironmentVariable($name, $value, 'Process')
+        }
+    }
+}
+
 # Démarrer le client GUI
 mvn exec:java -Pclient-gui
