@@ -124,6 +124,11 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
                 message.getSenderId()
             );
             
+            if(messageHistory.size() >= 50) {
+                // Supprimer le message le plus ancien si l'historique dépasse 50 messages
+                messageHistory.remove(0);
+            }
+            
             // Ajouter le message à l'historique
             messageHistory.add(timestampedMessage);
             
