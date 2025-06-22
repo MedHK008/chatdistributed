@@ -1,8 +1,11 @@
+fstm\distibutedsystem\ChatClientGUI$ConnectionDialog.class
 fstm\distibutedsystem\Message.class
 fstm\distibutedsystem\ChatClient.class
 fstm\distibutedsystem\ChatDemo.class
 fstm\distibutedsystem\LamportClock.class
+fstm\distibutedsystem\ChatClientGUI.class
 fstm\distibutedsystem\ChatClientInterface.class
 fstm\distibutedsystem\ChatServer.class
 fstm\distibutedsystem\Main.class
 fstm\distibutedsystem\ChatServerInterface.class
+fstm\distibutedsystem\ChatClientGUI$1.class

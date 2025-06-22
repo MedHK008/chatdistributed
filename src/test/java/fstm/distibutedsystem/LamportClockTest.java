@@ -77,22 +77,6 @@ public class LamportClockTest {
         LamportClock processB = new LamportClock();
         LamportClock processC = new LamportClock();
         
-        // Événements locaux
-        int A1 = processA.tick(); // A = 1
-        int B1 = processB.tick(); // B = 1
-        int B2 = processB.tick(); // B = 2
-        
-        // A envoie un message à B
-        int msgAtoB = processA.tick(); // A = 2, message avec timestamp 2
-        int B3 = processB.update(msgAtoB); // B = max(2, 2) + 1 = 3
-        
-        // B envoie un message à C
-        int msgBtoC = processB.tick(); // B = 4, message avec timestamp 4
-        int C1 = processC.update(msgBtoC); // C = max(0, 4) + 1 = 5
-        
-        // C envoie un message à A
-        int msgCtoA = processC.tick(); // C = 6, message avec timestamp 6
-        int A2 = processA.update(msgCtoA); // A = max(2, 6) + 1 = 7
         
         System.out.println("État final:");
         System.out.println("Processus A: " + processA.getCurrentTimestamp());

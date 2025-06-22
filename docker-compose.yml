@@ -1,0 +1,23 @@
+services:
+  chat-server:
+    build: .
+    container_name: chat-distributed-server
+    ports:
+      - "1099:1099"
+      - "1100:1100"
+    environment:
+      # Utilise la variable CHAT_HOST (définie à l'exécution) ou 127.0.0.1 par défaut
+      - JAVA_OPTS=-Djava.rmi.server.hostname=${CHAT_HOST:-127.0.0.1} -Djava.net.preferIPv4Stack=true -Djava.rmi.server.useLocalHostname=true
+      - RMI_HOSTNAME=${CHAT_HOST:-127.0.0.1}      
+      - SERVER_PORT=1099
+      - SERVER_NAME=ChatServer
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "sh", "-c", "netstat -an | grep 1099"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  chat-network:
+    driver: bridge

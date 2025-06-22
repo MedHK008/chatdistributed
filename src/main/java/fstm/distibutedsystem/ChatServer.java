@@ -23,8 +23,8 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
     private final LamportClock lamportClock;
     private final Object messageLock = new Object();
     
-    public ChatServer() throws RemoteException {
-        super();
+    public ChatServer(int exportPort) throws RemoteException {
+        super(exportPort);
         this.clients = new ConcurrentHashMap<>();
         this.clientNames = new ConcurrentHashMap<>();
         this.messageHistory = new CopyOnWriteArrayList<>();
@@ -35,6 +35,46 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
     
     @Override
     public String registerClient(ChatClientInterface clientCallback, String clientName) throws RemoteException {
+        // Vérifier la disponibilité du nom.
+        // Si le même nom existe déjà, on teste d'abord si la référence RMI du client
+        // est encore valide. Si elle ne l'est plus, on le supprime afin d'autoriser
+        // la reconnexion sous le même nom.
+        if (clientNames.containsValue(clientName)) {
+            String existingId = null;
+            for (Map.Entry<String, String> entry : clientNames.entrySet()) {
+                if (entry.getValue().equals(clientName)) {
+                    existingId = entry.getKey();
+                    break;
+                }
+            }
+            boolean stillAlive = true;
+            if (existingId != null) {
+                ChatClientInterface existingClient = clients.get(existingId);
+                if (existingClient == null) {
+                    stillAlive = false;
+                } else {
+                    try {
+                        // Appel anodin pour tester la connexion.
+                        existingClient.getClientName();
+                    } catch (RemoteException e) {
+                        stillAlive = false;
+                    }
+                }
+                // Si le client est hors-ligne, on le désinscrit proprement.
+                if (!stillAlive) {
+                    try {
+                        unregisterClient(existingId);
+                    } catch (RemoteException e) {
+                        // Ignorer, nous essayons déjà de nettoyer une référence morte.
+                    }
+                }
+            }
+            // Après nettoyage, vérifier à nouveau si le nom est encore pris.
+            if (clientNames.containsValue(clientName)) {
+                throw new RemoteException("Le nom \"" + clientName + "\" est déjà utilisé par un autre client.");
+            }
+        }
+        
         String clientId = UUID.randomUUID().toString();
         
         clients.put(clientId, clientCallback);
@@ -170,27 +210,53 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
                 System.err.println("Erreur lors de la désinscription du client déconnecté: " + e.getMessage());
             }
         }
-    }
-    
-    public static void main(String[] args) {
+    }    public static void main(String[] args) {
         try {
-            // Créer le registre RMI sur le port 1099
-            Registry registry = LocateRegistry.createRegistry(1099);
+            // Configure RMI system properties for Docker compatibility
+            String hostname = System.getenv().getOrDefault("RMI_HOSTNAME", "localhost");
             
-            // Créer et enregistrer le serveur
-            ChatServer server = new ChatServer();
-            registry.rebind("ChatServer", server);
+            // Check if we're running in Docker and adjust hostname accordingly
+            if (System.getenv("JAVA_OPTS") != null && System.getenv("JAVA_OPTS").contains("host.docker.internal")) {
+                hostname = "host.docker.internal";
+            }
             
-            System.out.println("Serveur de chat démarré et enregistré dans le registre RMI");
+            System.setProperty("java.rmi.server.hostname", hostname);
+            System.setProperty("java.net.preferIPv4Stack", "true");
+            System.setProperty("java.rmi.server.useLocalHostname", "true");
+            System.setProperty("java.rmi.dgc.leaseValue", "600000");
+            
+            int port = 1099;
+            String portEnv = System.getenv("SERVER_PORT");
+            if (portEnv != null && !portEnv.isEmpty()) {
+                try {
+                    port = Integer.parseInt(portEnv);
+                } catch (NumberFormatException e) {
+                    System.out.println("Port invalide dans SERVER_PORT, utilisation du port par défaut 1099");
+                }
+            }
+            String serverName = System.getenv().getOrDefault("SERVER_NAME", "ChatServer");
+            
+            // Create RMI registry
+            Registry registry = LocateRegistry.createRegistry(port);
+            // Utilise le port 1100 pour l'exportation RMI
+            int exportPort = 1100;
+            ChatServer server = new ChatServer(exportPort);
+            registry.rebind(serverName, server);
+            
+            System.out.println("Serveur de chat démarré et enregistré dans le registre RMI sous le nom : " + serverName + " sur le port : " + port);
+            System.out.println("Configuration RMI:");
+            System.out.println("  - java.rmi.server.hostname: " + System.getProperty("java.rmi.server.hostname"));
+            System.out.println("  - java.net.preferIPv4Stack: " + System.getProperty("java.net.preferIPv4Stack"));
+            System.out.println("  - java.rmi.server.useLocalHostname: " + System.getProperty("java.rmi.server.useLocalHostname"));
             System.out.println("En attente de connexions clients...");
             System.out.println("Appuyez sur Ctrl+C pour arrêter le serveur");
-            
-            // Garder le serveur en vie
             Thread.currentThread().join();
-            
-        } catch (Exception e) {
-            System.err.println("Erreur du serveur: " + e.getMessage());
+        } catch (java.rmi.RemoteException e) {
+            System.err.println("Erreur RMI du serveur: " + e.getMessage());
             e.printStackTrace();
+        } catch (java.lang.InterruptedException e) {
+            System.err.println("Le serveur a été interrompu: " + e.getMessage());
+            Thread.currentThread().interrupt();
         }
     }
 }
