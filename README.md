@@ -51,47 +51,90 @@ src/main/java/fstm/distibutedsystem/
 
 ### Prérequis
 - Java 17 ou supérieur
-- Maven
+- Maven 3.6+
+- Docker (optionnel, pour l'exécution en conteneur)
 
-### Compilation
+### Méthode 1: Exécution Native (Recommandée)
+
+#### 1. Compilation
 ```bash
 mvn clean compile
 ```
 
-### Démarrage du Serveur
+#### 2. Démarrage du serveur
 ```bash
-# Option 1: Via Maven
-mvn exec:java -Dexec.mainClass="fstm.distibutedsystem.ChatServer"
+# Windows
+.\start-server.ps1
 
-# Option 2: Via Java direct
-java -cp target/classes fstm.distibutedsystem.ChatServer
-
-# Option 3: Via la classe démonstration
-java -cp target/classes fstm.distibutedsystem.ChatDemo server
+# Linux/Mac ou commande Maven directe
+mvn exec:java -Pserver
 ```
 
-### Démarrage d'un Client Console
+#### 3. Démarrage du client GUI
 ```bash
-# Option 1: Via Maven
-mvn exec:java -Dexec.mainClass="fstm.distibutedsystem.ChatClient"
-
-# Option 2: Via Java direct
-java -cp target/classes fstm.distibutedsystem.ChatClient
-
-# Option 3: Via la classe démonstration
-java -cp target/classes fstm.distibutedsystem.ChatDemo client
-```
-
-### Démarrage d'un Client GUI (Recommandé)
-```bash
-# Option 1: Via Maven avec profil
-mvn exec:java -Pclient-gui
-
-# Option 2: Via Java direct
-java -cp target/classes fstm.distibutedsystem.ChatClientGUI
-
-# Option 3: Via script PowerShell (Windows)
+# Windows
 .\start-client-gui.ps1
+
+# Linux/Mac ou commande Maven directe
+mvn exec:java -Pclient-gui
+```
+
+#### 4. Démarrage du client console (optionnel)
+```bash
+mvn exec:java -Pclient
+```
+
+### Méthode 2: Exécution avec Docker
+
+⚠️ **Important pour Windows**: RMI avec Docker peut être complexe sur Windows. Utilisez la configuration spécifique Windows.
+
+#### Pour Windows (Recommandé)
+```bash
+# Utiliser la configuration Windows-specific
+docker-compose -f docker-compose-windows.yml up -d
+
+# Vérifier les logs
+docker-compose -f docker-compose-windows.yml logs -f chat-server
+
+# Démarrer le client GUI nativement (pas dans Docker)
+.\start-client-gui.ps1
+# Dans la GUI: Serveur = localhost, Port = 1099
+```
+
+#### Pour Linux/Mac
+```bash
+# Utiliser la configuration standard avec host networking
+docker-compose up -d
+
+# Démarrer le client
+mvn exec:java -Pclient-gui
+```
+
+### Dépannage Docker sur Windows
+
+Si vous rencontrez des problèmes de connexion avec Docker:
+
+1. **Utilisez le script de dépannage**:
+   ```bash
+   .\troubleshoot-docker.ps1
+   ```
+
+2. **Problèmes courants et solutions**:
+   - **Connexion refusée**: Utilisez `docker-compose-windows.yml`
+   - **Port non accessible**: Vérifiez que le conteneur est démarré
+   - **RMI ne fonctionne pas**: Le client doit être exécuté nativement, pas dans Docker
+
+3. **Configuration alternative - Serveur natif**:
+   ```bash
+   # Si Docker pose problème, démarrez tout nativement
+   .\start-server.ps1        # Dans un terminal
+   .\start-client-gui.ps1    # Dans un autre terminal
+   ```
+
+### Test de l'installation
+```bash
+# Script de test automatique (Windows)
+.\test-docker-connection.ps1
 ```
 
 ## Utilisation

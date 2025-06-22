@@ -170,10 +170,21 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
                 System.err.println("Erreur lors de la désinscription du client déconnecté: " + e.getMessage());
             }
         }
-    }
-    
-    public static void main(String[] args) {
+    }    public static void main(String[] args) {
         try {
+            // Configure RMI system properties for Docker compatibility
+            String hostname = System.getenv().getOrDefault("RMI_HOSTNAME", "localhost");
+            
+            // Check if we're running in Docker and adjust hostname accordingly
+            if (System.getenv("JAVA_OPTS") != null && System.getenv("JAVA_OPTS").contains("host.docker.internal")) {
+                hostname = "host.docker.internal";
+            }
+            
+            System.setProperty("java.rmi.server.hostname", hostname);
+            System.setProperty("java.net.preferIPv4Stack", "true");
+            System.setProperty("java.rmi.server.useLocalHostname", "true");
+            System.setProperty("java.rmi.dgc.leaseValue", "600000");
+            
             int port = 1099;
             String portEnv = System.getenv("SERVER_PORT");
             if (portEnv != null && !portEnv.isEmpty()) {
@@ -184,15 +195,23 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
                 }
             }
             String serverName = System.getenv().getOrDefault("SERVER_NAME", "ChatServer");
+            
+            // Create RMI registry
             Registry registry = LocateRegistry.createRegistry(port);
             ChatServer server = new ChatServer();
             registry.rebind(serverName, server);
+            
             System.out.println("Serveur de chat démarré et enregistré dans le registre RMI sous le nom : " + serverName + " sur le port : " + port);
+            System.out.println("Configuration RMI:");
+            System.out.println("  - java.rmi.server.hostname: " + System.getProperty("java.rmi.server.hostname"));
+            System.out.println("  - java.net.preferIPv4Stack: " + System.getProperty("java.net.preferIPv4Stack"));
+            System.out.println("  - java.rmi.server.useLocalHostname: " + System.getProperty("java.rmi.server.useLocalHostname"));
             System.out.println("En attente de connexions clients...");
             System.out.println("Appuyez sur Ctrl+C pour arrêter le serveur");
             Thread.currentThread().join();
         } catch (java.rmi.RemoteException e) {
             System.err.println("Erreur RMI du serveur: " + e.getMessage());
+            e.printStackTrace();
         } catch (java.lang.InterruptedException e) {
             System.err.println("Le serveur a été interrompu: " + e.getMessage());
             Thread.currentThread().interrupt();

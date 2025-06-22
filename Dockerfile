@@ -19,11 +19,12 @@ COPY src ./src
 # Compile the application
 RUN mvn clean compile
 
-# Expose the RMI registry port and the server port
+# Expose the RMI registry port and callback ports
 EXPOSE 1099
+EXPOSE 1100-1110
 
 # Set JVM properties for RMI to work in Docker
-ENV JAVA_OPTS="-Djava.rmi.server.hostname=0.0.0.0 -Djava.net.preferIPv4Stack=true"
+ENV JAVA_OPTS="-Djava.rmi.server.hostname=localhost -Djava.net.preferIPv4Stack=true -Djava.rmi.server.useLocalHostname=true -Djava.rmi.dgc.leaseValue=600000"
 
 # Run the chat server
 CMD ["mvn", "exec:java", "-Pserver"]

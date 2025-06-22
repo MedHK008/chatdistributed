@@ -210,14 +210,20 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
         
         return bottomPanel;
     }
-    
-    /**
+      /**
      * Se connecte au serveur
      */
     public void connectToServer(String serverHost, int serverPort) throws Exception {
         try {
+            appendSystemMessage("Tentative de connexion à " + serverHost + ":" + serverPort + "...");
+            updateStatus("Connexion en cours...", Color.ORANGE);
+            
             Registry registry = LocateRegistry.getRegistry(serverHost, serverPort);
+            appendSystemMessage("Registre RMI localisé, recherche du serveur 'ChatServer'...");
+            
             server = (ChatServerInterface) registry.lookup("ChatServer");
+            appendSystemMessage("Serveur trouvé, inscription du client...");
+            
             clientId = server.registerClient(this, clientName);
             
             isConnected = true;
@@ -225,9 +231,24 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
             appendSystemMessage("Connecté au serveur avec l'ID: " + clientId);
             appendSystemMessage("Bienvenue dans le chat distribué !");
             
+        } catch (java.rmi.NotBoundException e) {
+            updateStatus("Serveur non trouvé", Color.RED);
+            appendSystemMessage("Erreur: Le serveur 'ChatServer' n'est pas enregistré dans le registre RMI");
+            appendSystemMessage("Vérifiez que le serveur est démarré et accessible");
+            throw e;
+        } catch (java.rmi.ConnectException e) {
+            updateStatus("Connexion refusée", Color.RED);
+            appendSystemMessage("Erreur: Impossible de se connecter au registre RMI sur " + serverHost + ":" + serverPort);
+            appendSystemMessage("Vérifiez que le serveur est démarré et que le port est correct");
+            throw e;
         } catch (java.rmi.RemoteException e) {
+            updateStatus("Erreur RMI", Color.RED);
+            appendSystemMessage("Erreur RMI: " + e.getMessage());
+            appendSystemMessage("Cause possible: " + (e.getCause() != null ? e.getCause().getMessage() : "Inconnue"));
+            throw e;
+        } catch (Exception e) {
             updateStatus("Erreur de connexion", Color.RED);
-            appendSystemMessage("Erreur de connexion: " + e.getMessage());
+            appendSystemMessage("Erreur inattendue: " + e.getMessage());
             throw e;
         }
     }
