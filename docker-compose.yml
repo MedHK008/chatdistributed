@@ -3,9 +3,11 @@ services:
     build: .
     container_name: chat-distributed-server
     ports:
-      - "1099:1099"  # RMI registry port
+      - "${SERVER_PORT:-1099}:1099"  # RMI registry port
     environment:
       - JAVA_OPTS=-Djava.rmi.server.hostname=localhost -Djava.net.preferIPv4Stack=true
+      - SERVER_PORT=1099
+      - SERVER_NAME=ChatServer
     networks:
       - chat-network
     restart: unless-stopped

@@ -174,20 +174,23 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
     
     public static void main(String[] args) {
         try {
-            // Créer le registre RMI sur le port 1099
-            Registry registry = LocateRegistry.createRegistry(1099);
-            
-            // Créer et enregistrer le serveur
+            int port = 1099;
+            String portEnv = System.getenv("SERVER_PORT");
+            if (portEnv != null && !portEnv.isEmpty()) {
+                try {
+                    port = Integer.parseInt(portEnv);
+                } catch (NumberFormatException e) {
+                    System.out.println("Port invalide dans SERVER_PORT, utilisation du port par défaut 1099");
+                }
+            }
+            String serverName = System.getenv().getOrDefault("SERVER_NAME", "ChatServer");
+            Registry registry = LocateRegistry.createRegistry(port);
             ChatServer server = new ChatServer();
-            registry.rebind("ChatServer", server);
-            
-            System.out.println("Serveur de chat démarré et enregistré dans le registre RMI");
+            registry.rebind(serverName, server);
+            System.out.println("Serveur de chat démarré et enregistré dans le registre RMI sous le nom : " + serverName + " sur le port : " + port);
             System.out.println("En attente de connexions clients...");
             System.out.println("Appuyez sur Ctrl+C pour arrêter le serveur");
-            
-            // Garder le serveur en vie
             Thread.currentThread().join();
-            
         } catch (java.rmi.RemoteException e) {
             System.err.println("Erreur RMI du serveur: " + e.getMessage());
         } catch (java.lang.InterruptedException e) {
