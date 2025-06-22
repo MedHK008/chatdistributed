@@ -1,0 +1,35 @@
+# Ignore target directory (except for production builds)
+target/
+!target/classes/
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore logs
+*.log
+
+# Ignore temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Ignore database files
+data/
+
+# Ignore Docker files (to avoid recursive copying)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore PowerShell scripts (not needed in container)
+*.ps1
+*.bat

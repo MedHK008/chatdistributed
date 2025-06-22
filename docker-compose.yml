@@ -1,0 +1,20 @@
+services:
+  chat-server:
+    build: .
+    container_name: chat-distributed-server
+    ports:
+      - "1099:1099"  # RMI registry port
+    environment:
+      - JAVA_OPTS=-Djava.rmi.server.hostname=localhost -Djava.net.preferIPv4Stack=true
+    networks:
+      - chat-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "netstat", "-an", "|", "grep", "1099"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  chat-network:
+    driver: bridge

@@ -41,7 +41,6 @@ import javax.swing.text.StyledDocument;
 public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInterface {
     private static final long serialVersionUID = 1L;
     
-    // Components GUI
     private JFrame frame;
     private JTextPane chatArea;
     private JTextField messageField;
@@ -51,7 +50,6 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
     private JLabel statusLabel;
     private JLabel clockLabel;
     
-    // Chat functionality
     private final String clientName;
     private String clientId;
     private ChatServerInterface server;
@@ -59,7 +57,6 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
     private final BlockingQueue<Message> messageQueue;
     private boolean isConnected;
     
-    // Styles for messages
     private SimpleAttributeSet myMessageStyle;
     private SimpleAttributeSet otherMessageStyle;
     private SimpleAttributeSet systemMessageStyle;
@@ -77,9 +74,6 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
         startMessageProcessor();
     }
     
-    /**
-     * Initialise les styles pour les messages
-     */
     private void initializeStyles() {
         // Style pour mes messages
         myMessageStyle = new SimpleAttributeSet();
