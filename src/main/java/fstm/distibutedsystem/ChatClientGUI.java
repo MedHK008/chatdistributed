@@ -225,7 +225,7 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
             appendSystemMessage("Connecté au serveur avec l'ID: " + clientId);
             appendSystemMessage("Bienvenue dans le chat distribué !");
             
-        } catch (Exception e) {
+        } catch (java.rmi.RemoteException e) {
             updateStatus("Erreur de connexion", Color.RED);
             appendSystemMessage("Erreur de connexion: " + e.getMessage());
             throw e;
@@ -317,7 +317,7 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
             try {
                 doc.insertString(doc.getLength(), "Aucun message dans l'historique.", systemMessageStyle);
             } catch (BadLocationException e) {
-                e.printStackTrace();
+                appendSystemMessage(" - Erreur lors de l'affichage de l'historique: " + e.getMessage());
             }
         } else {
             for (Message msg : history) {
@@ -361,7 +361,7 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
                 doc.insertString(doc.getLength(), "[SYSTÈME] " + message + "\n", systemMessageStyle);
                 chatArea.setCaretPosition(doc.getLength());
             } catch (BadLocationException e) {
-                e.printStackTrace();
+                System.err.println("Erreur lors de l'ajout du message système: " + e.getMessage());
             }
         });
     }
@@ -400,7 +400,7 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
             doc.insertString(doc.getLength(), message.getContent() + "\n", otherMessageStyle);
             
         } catch (BadLocationException e) {
-            e.printStackTrace();
+            System.err.println("Erreur lors de l'ajout du message système: " + e.getMessage());
         }
     }
     

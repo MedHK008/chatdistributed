@@ -58,9 +58,8 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
             
             isRunning = true;
             
-        } catch (Exception e) {
-            System.err.println("Erreur de connexion au serveur: " + e.getMessage());
-            throw e;
+        } catch (java.rmi.RemoteException e) {
+            System.err.println("Erreur RMI du serveur: " + e.getMessage());
         }
     }
     
@@ -230,9 +229,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
     }
     
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        try {
+        try (Scanner scanner = new Scanner(System.in)) {
             System.out.print("Entrez votre nom: ");
             String clientName = scanner.nextLine().trim();
             
@@ -267,9 +264,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientInterfa
             
         } catch (Exception e) {
             System.err.println("Erreur du client: " + e.getMessage());
-            e.printStackTrace();
         } finally {
-            scanner.close();
             System.exit(0);
         }
     }
