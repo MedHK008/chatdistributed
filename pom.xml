@@ -133,21 +133,9 @@
             </properties>
         </profile>
         <profile>
-            <id>client</id>
-            <properties>
-                <exec.mainClass>fstm.distibutedsystem.ChatClient</exec.mainClass>
-            </properties>
-        </profile>
-        <profile>
             <id>client-gui</id>
             <properties>
                 <exec.mainClass>fstm.distibutedsystem.ChatClientGUI</exec.mainClass>
-            </properties>
-        </profile>
-        <profile>
-            <id>demo</id>
-            <properties>
-                <exec.mainClass>fstm.distibutedsystem.ChatDemo</exec.mainClass>
             </properties>
         </profile>
     </profiles>
