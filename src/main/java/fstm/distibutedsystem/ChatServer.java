@@ -215,7 +215,13 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerInterfa
                 System.err.println("Erreur lors de la désinscription du client déconnecté: " + e.getMessage());
             }
         }
-    }    public static void main(String[] args) {
+    }    
+
+    public int getMessageCount() {
+        return messageHistory.size();
+    }
+    
+    public static void main(String[] args) {
         try {
             // Configure RMI system properties for Docker compatibility
             String hostname = System.getenv().getOrDefault("RMI_HOSTNAME", "localhost");
