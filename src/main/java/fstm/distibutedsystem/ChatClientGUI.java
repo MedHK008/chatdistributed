@@ -9,12 +9,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -511,94 +514,63 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
      */
     private static class ConnectionDialog extends JDialog {
         private String clientName;
-        private String serverHost;
-        private int serverPort;
         private boolean cancelled = true;
-        
+
         public ConnectionDialog(JFrame parent) {
             super(parent, "Connexion au Chat", true);
             createDialog();
         }
-        
+
         private void createDialog() {
-            setSize(350, 200);
+            setSize(350, 130);
             setLocationRelativeTo(getParent());
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            
+
             JPanel panel = new JPanel(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(5, 5, 5, 5);
-            
+
             // Nom du client
             gbc.gridx = 0; gbc.gridy = 0;
             panel.add(new JLabel("Votre nom:"), gbc);
-            
+
             JTextField nameField = new JTextField(15);
             gbc.gridx = 1;
             panel.add(nameField, gbc);
-            
-            // Adresse du serveur
-            gbc.gridx = 0; gbc.gridy = 1;
-            panel.add(new JLabel("Serveur:"), gbc);
-            
-            JTextField hostField = new JTextField("localhost", 15);
-            gbc.gridx = 1;
-            panel.add(hostField, gbc);
-            
-            // Port du serveur
-            gbc.gridx = 0; gbc.gridy = 2;
-            panel.add(new JLabel("Port:"), gbc);
-            
-            JTextField portField = new JTextField("1099", 15);
-            gbc.gridx = 1;
-            panel.add(portField, gbc);
-            
+
             // Boutons
             JPanel buttonPanel = new JPanel();
             JButton connectButton = new JButton("Connexion");
             JButton cancelButton = new JButton("Annuler");
-            
+
             connectButton.addActionListener(e -> {
                 String name = nameField.getText().trim();
                 if (name.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Veuillez entrer votre nom.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                
-                try {
-                    clientName = name;
-                    serverHost = hostField.getText().trim();
-                    if (serverHost.isEmpty()) serverHost = "localhost";
-                    
-                    String portText = portField.getText().trim();
-                    serverPort = portText.isEmpty() ? 1099 : Integer.parseInt(portText);
-                    
-                    cancelled = false;
-                    dispose();
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Port invalide.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                }
+                clientName = name;
+                cancelled = false;
+                dispose();
             });
-            
+
             cancelButton.addActionListener(e -> dispose());
-            
+
             buttonPanel.add(connectButton);
             buttonPanel.add(cancelButton);
-            
-            gbc.gridx = 0; gbc.gridy = 3;
+
+            gbc.gridx = 0; gbc.gridy = 1;
             gbc.gridwidth = 2;
             panel.add(buttonPanel, gbc);
-            
+
             add(panel);
-            
+
             // Définir le bouton par défaut
             getRootPane().setDefaultButton(connectButton);
             nameField.requestFocus();
         }
-        
+
         public String getClientName() { return clientName; }
-        public String getServerHost() { return serverHost; }
-        public int getServerPort() { return serverPort; }
         public boolean isCancelled() { return cancelled; }
     }
       /**
@@ -618,6 +590,28 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
         }
     }
 
+    private static String getServerHostFromConfig() {
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            props.load(fis);
+            return props.getProperty("rmi.server.hostname", "localhost");
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de config.properties: " + e.getMessage());
+            return "localhost";
+        }
+    }
+
+    private static int getServerPortFromConfig() {
+        Properties props = new Properties();
+        try (FileInputStream fis = new FileInputStream("config.properties")) {
+            props.load(fis);
+            return Integer.parseInt(props.getProperty("rmi.registry.port", "1099"));
+        } catch (IOException | NumberFormatException e) {
+            System.err.println("Erreur lors du chargement de config.properties: " + e.getMessage());
+            return 1099;
+        }
+    }
+
     public static void main(String[] args) {
         // Afficher la boîte de dialogue de connexion
         ConnectionDialog dialog = new ConnectionDialog(null);
@@ -630,8 +624,8 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
             }
             try {
                 String clientName = dialog.getClientName();
-                String serverHost = dialog.getServerHost();
-                int serverPort = dialog.getServerPort();
+                String serverHost = getServerHostFromConfig();
+                int serverPort = getServerPortFromConfig();
                 // Créer le client GUI
                 clientInstance = new ChatClientGUI(clientName);
                 // Essayer de se connecter
@@ -641,7 +635,6 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
                     clientInstance.disposeWindow();
                     clientInstance = null;
                 }
-                
                 try {
                     // Créer une nouvelle instance avec le nouveau nom
                     clientInstance = new ChatClientGUI(clientName);
