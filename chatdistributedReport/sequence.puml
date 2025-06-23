@@ -1,0 +1,29 @@
+@startuml
+actor ClientA
+actor ClientB
+participant "LamportClock A" as LamportA
+participant "LamportClock B" as LamportB
+participant "ChatServer" as Server
+participant "LamportClock S" as LamportS
+
+' ClientA sends a message
+ClientA -> LamportA : increment()
+LamportA --> ClientA : timestampA1
+ClientA -> Server : send(messageA, timestampA1)
+Server -> LamportS : receive(messageA, timestampA1)
+LamportS --> Server : update(max(local, timestampA1)+1)
+Server -> ClientB : deliver(messageA, timestampS1)
+ClientB -> LamportB : receive(messageA, timestampS1)
+LamportB --> ClientB : update(max(local, timestampS1)+1)
+
+' ClientB sends a message
+ClientB -> LamportB : increment()
+LamportB --> ClientB : timestampB1
+ClientB -> Server : send(messageB, timestampB1)
+Server -> LamportS : receive(messageB, timestampB1)
+LamportS --> Server : update(max(local, timestampB1)+1)
+Server -> ClientA : deliver(messageB, timestampS2)
+ClientA -> LamportA : receive(messageB, timestampS2)
+LamportA --> ClientA : update(max(local, timestampS2)+1)
+
+@enduml
