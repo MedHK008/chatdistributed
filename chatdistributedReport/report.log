@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.7)  23 JUN 2025 20:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.7)  23 JUN 2025 20:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -27,6 +27,8 @@ File: size12.clo 2024/06/29 v1.4n Standard LaTeX file (size option)
 Package: inputenc 2024/02/08 v1.3d Input encoding file
 \inpenc@prehook=\toks17
 \inpenc@posthook=\toks18
+) (C:\Users\HADES\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
 ) (C:\Users\HADES\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
 Package: babel 2025/01/25 v25.2 The multilingual framework for pdfLaTeX, LuaLaTeX and XeLaTeX
 \babel@savecnt=\count270
@@ -249,33 +251,27 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 ) (report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Info: Redefining \degres on input line 21.
-LaTeX Info: Redefining \up on input line 21.
-
-
-Package french.ldf Warning: OT1 encoding should not be used for French.
-(french.ldf)                Add \usepackage[T1]{fontenc} to the preamble
-(french.ldf)                of your document; reported on input line 21.
-
-(C:\Users\HADES\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Info: Redefining \degres on input line 22.
+LaTeX Info: Redefining \up on input line 22.
+ (C:\Users\HADES\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count300
 \scratchdimen=\dimen162
@@ -295,130 +291,104 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 \c@lstlisting=\count306
-Package hyperref Info: Link coloring OFF on input line 21.
+Package hyperref Info: Link coloring OFF on input line 22.
  (report.out) (report.out)
 \@outlinefile=\write3
 \openout3 = `report.out'.
 
-<images/architecture.png, id=3, 573.14125pt x 244.915pt>
+<images/architecture.png, id=67, 573.14125pt x 244.915pt>
 File: images/architecture.png Graphic file (type png)
 <use images/architecture.png>
-Package pdftex.def Info: images/architecture.png  used on input line 32.
+Package pdftex.def Info: images/architecture.png  used on input line 33.
 (pdftex.def)             Requested size: 452.9679pt x 193.56667pt.
-<images/class.png, id=4, 852.18375pt x 373.395pt>
+<images/class.png, id=68, 852.18375pt x 373.395pt>
 File: images/class.png Graphic file (type png)
 <use images/class.png>
-Package pdftex.def Info: images/class.png  used on input line 54.
+Package pdftex.def Info: images/class.png  used on input line 55.
 (pdftex.def)             Requested size: 452.9679pt x 198.47386pt.
 
 
 [1
 
 {C:/Users/HADES/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./images/architecture.png>]
-Overfull \hbox (8.40918pt too wide) in paragraph at lines 65--66
-[][]\OT1/cmr/m/n/12 A la r^^Seception d'un mes-sage, le pro-ces-sus met ^^Ra jour son hor-loge ^^Ra \OT1/cmtt/m/n/12 max(son[]horloge,
- []
-
-
 
 [2 <./images/class.png>]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 71.
+(Font)              <10.95> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 71.
+(Font)              <8> on input line 72.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 71.
-<images/sequence.png, id=28, 573.14125pt x 486.81876pt>
+(Font)              <6> on input line 72.
+<images/sequence.png, id=89, 573.14125pt x 486.81876pt>
 File: images/sequence.png Graphic file (type png)
 <use images/sequence.png>
-Package pdftex.def Info: images/sequence.png  used on input line 101.
+Package pdftex.def Info: images/sequence.png  used on input line 102.
 (pdftex.def)             Requested size: 452.9679pt x 384.75345pt.
 
 
 [3]
-<images/name.png, id=58, 251.43938pt x 91.09032pt>
+<images/name.png, id=118, 251.43938pt x 91.09032pt>
 File: images/name.png Graphic file (type png)
 <use images/name.png>
-Package pdftex.def Info: images/name.png  used on input line 114.
+Package pdftex.def Info: images/name.png  used on input line 115.
 (pdftex.def)             Requested size: 362.37569pt x 131.27972pt.
 
 
 [4 <./images/sequence.png>]
-<images/chatEmpty.png, id=67, 444.15938pt x 371.13657pt>
+<images/chatEmpty.png, id=125, 444.15938pt x 371.13657pt>
 File: images/chatEmpty.png Graphic file (type png)
 <use images/chatEmpty.png>
-Package pdftex.def Info: images/chatEmpty.png  used on input line 124.
+Package pdftex.def Info: images/chatEmpty.png  used on input line 125.
 (pdftex.def)             Requested size: 362.37569pt x 302.79926pt.
-<images/connectedClients.png, id=68, 201.75375pt x 118.19156pt>
+<images/connectedClients.png, id=126, 201.75375pt x 118.19156pt>
 File: images/connectedClients.png Graphic file (type png)
 <use images/connectedClients.png>
-Package pdftex.def Info: images/connectedClients.png  used on input line 133.
+Package pdftex.def Info: images/connectedClients.png  used on input line 134.
 (pdftex.def)             Requested size: 362.37569pt x 212.29016pt.
 
 
 [5 <./images/name.png> <./images/chatEmpty.png>]
-<images/history.png, id=79, 365.86688pt x 292.84406pt>
+<images/history.png, id=135, 365.86688pt x 292.84406pt>
 File: images/history.png Graphic file (type png)
 <use images/history.png>
-Package pdftex.def Info: images/history.png  used on input line 142.
+Package pdftex.def Info: images/history.png  used on input line 143.
 (pdftex.def)             Requested size: 362.37569pt x 290.06396pt.
 
-Overfull \hbox (6.15651pt too wide) in paragraph at lines 147--148
-[]\OT1/cmr/m/n/12 L'interface montre la com-mu-ni-ca-tion en temps r^^Seel entre plu-sieurs uti-li-sa-teurs connect^^Ses
- []
 
-<images/twoClients.png, id=80, 895.84688pt x 372.64218pt>
+[6 <./images/connectedClients.png>]
+<images/twoClients.png, id=142, 895.84688pt x 372.64218pt>
 File: images/twoClients.png Graphic file (type png)
 <use images/twoClients.png>
-Package pdftex.def Info: images/twoClients.png  used on input line 151.
+Package pdftex.def Info: images/twoClients.png  used on input line 152.
 (pdftex.def)             Requested size: 452.9679pt x 188.41878pt.
 
 
-[6 <./images/connectedClients.png> <./images/history.png>]
-Overfull \hbox (19.03397pt too wide) in paragraph at lines 161--162
-[]\OT1/cmr/m/n/12 Ouvrez un ter-mi-nal dans le dos-sier du pro-jet conte-nant le fi-chier \OT1/cmtt/m/n/12 docker-compose.yml\OT1/cmr/m/n/12 . 
- []
-
-(C:\Users\HADES\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+[7 <./images/history.png> <./images/twoClients.png>] (C:\Users\HADES\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 ) (C:\Users\HADES\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
-Overfull \hbox (2.1399pt too wide) in paragraph at lines 176--177
-[]\OT1/cmr/m/n/12 Ex^^Secutez le script Po-wer-Shell sui-vant pour d^^Semarrer l'in-ter-face gra-phique du client : 
- []
-
-
-
-[7 <./images/twoClients.png>]
 
 [8] (report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-Package rerunfilecheck Warning: File `report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `report.out':
-(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
-(rerunfilecheck)             After:  4F02E453B332FCD81AE15236B68464EF;3070.
+Package rerunfilecheck Info: File `report.out' has not changed.
+(rerunfilecheck)             Checksum: D28E3EC0899EED29A8179CE523A7482B;3062.
  ) 
 Here is how much of TeX's memory you used:
- 12841 strings out of 473530
- 205215 string characters out of 5714795
- 877559 words of memory out of 5000000
- 35863 multiletter control sequences out of 15000+600000
- 564030 words of font info for 54 fonts, out of 8000000 for 9000
+ 13053 strings out of 473530
+ 207124 string characters out of 5714795
+ 876973 words of memory out of 5000000
+ 36068 multiletter control sequences out of 15000+600000
+ 567804 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,7n,79p,851b,1934s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/HADES/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/HADES/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/HADES/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/HADES/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/HADES/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on report.pdf (8 pages, 217681 bytes).
+ 75i,7n,79p,850b,1340s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\HADES\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1095.pk> <C:\Users\HADES\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk> <C:\Users\HADES\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk> <C:\Users\HADES\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1200.pk> <C:\Users\HADES\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\eccc1200.pk> <C:\Users\HADES\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1200.pk> <C:\Users\HADES\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk>
+Output written on report.pdf (8 pages, 241726 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
+ 477 PDF objects out of 1000 (max. 8388607)
  74 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
