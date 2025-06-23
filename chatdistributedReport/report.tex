@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{fullpage}
 \usepackage{placeins}
+\graphicspath{{images/}}
 
 \lstset{
     basicstyle=\ttfamily\small,
@@ -66,7 +67,7 @@ L'algorithme de Lamport permet d'ordonner les événements dans un système dist
 
 \subsection{Présentation de l'algorithme}
 L'algorithme de Lamport, proposé par Leslie Lamport en 1978, vise à résoudre le problème de l'ordre des événements dans un système distribué où il n'existe pas d'horloge physique globale. Dans un tel environnement, il est difficile de déterminer l'ordre exact des événements (comme l'envoi ou la réception de messages) car chaque machine possède sa propre horloge locale. L'algorithme introduit le concept d'horodatage logique : chaque événement se voit attribuer un numéro croissant, garantissant ainsi un ordre partiel cohérent entre tous les nœuds du système. Cela permet d'assurer la cohérence causale des messages et d'éviter les conflits liés à la simultanéité des actions dans le système distribué.
-\begin{lstlisting}[caption={Horloge logique de Lamport (pseudo-code)}]
+\begin{lstlisting}
 class LamportClock {
     int compteur = 0;
 
@@ -102,6 +103,56 @@ class LamportClock {
 \end{figure}
 \FloatBarrier
 
+\section{Interface Utilisateur}
+Cette section présente les différentes interfaces du système de chat distribué, montrant l'évolution de l'interface graphique selon les actions des utilisateurs.
+
+\subsection{Interface de connexion}
+Lorsqu'un utilisateur lance le client, il doit d'abord saisir son nom d'utilisateur pour se connecter au serveur.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{name.png}
+    \caption{Interface de saisie du nom d'utilisateur}
+\end{figure}
+\FloatBarrier
+
+\subsection{Interface principale vide}
+Après la connexion, l'utilisateur accède à l'interface principale du chat, initialement vide.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{chatEmpty.png}
+    \caption{Interface principale du chat après connexion (vide)}
+\end{figure}
+\FloatBarrier
+\subsection{Liste des clients connectés}
+L'interface affiche la liste des utilisateurs actuellement connectés au serveur de chat.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{connectedClients.png}
+    \caption{Affichage de la liste des clients connectés}
+\end{figure}
+\FloatBarrier
+\subsection{Historique des messages}
+L'interface permet de visualiser l'historique des messages échangés, avec les horodatages de Lamport.
+(L'historique est limité aux 50 derniers messages)
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{history.png}
+    \caption{Affichage de l'historique des messages avec horodatages}
+\end{figure}
+\FloatBarrier
+\subsection{Communication entre plusieurs clients}
+L'interface montre la communication en temps réel entre plusieurs utilisateurs connectés simultanément.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=1\textwidth]{twoClients.png}
+    \caption{Communication entre plusieurs clients connectés}
+\end{figure}
+\FloatBarrier
+
 \section{comment executer le projet}
 
 \subsection{Lancer le serveur avec Docker}
@@ -109,11 +160,11 @@ class LamportClock {
     \item Assurez-vous d'avoir Docker et Docker Compose installés sur votre machine.
     \item Ouvrez un terminal dans le dossier du projet contenant le fichier \texttt{docker-compose.yml}.
     \item Lancez le serveur avec la commande suivante :
-    \begin{lstlisting}[language=bash,caption={Démarrage du serveur avec Docker}]
+    \begin{lstlisting}[language=bash]
 docker-compose up -d
     \end{lstlisting}
     \item Pour vérifier que le serveur fonctionne, vous pouvez consulter les logs :
-    \begin{lstlisting}[language=bash,caption={Afficher les logs du serveur}]
+    \begin{lstlisting}[language=bash]
 docker-compose logs -f
     \end{lstlisting}
     \item Le serveur de chat est maintenant prêt à accepter des connexions clients.
@@ -123,7 +174,7 @@ docker-compose logs -f
 \begin{enumerate}
     \item Ouvrez un terminal PowerShell dans le dossier du projet.
     \item Exécutez le script PowerShell suivant pour démarrer l'interface graphique du client :
-    \begin{lstlisting}[language=bash,caption={Démarrage du client GUI sous Windows}]
+    \begin{lstlisting}[language=bash]
 ./start-client-gui.ps1
     \end{lstlisting}
     \item Suivez les instructions à l'écran pour vous connecter au serveur. L'utilisateur doit uniquement saisir son nom ; l'adresse et le port du serveur sont automatiquement récupérés depuis le fichier \texttt{config.properties}.
