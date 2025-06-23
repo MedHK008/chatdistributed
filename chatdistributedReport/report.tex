@@ -41,8 +41,8 @@ Le système se compose de plusieurs clients (interface graphique ou ligne de com
 
 \textbf{Contraintes d'implémentation :}
 \begin{itemize}
-    \item L’historique des messages sur le serveur est limité à 50 messages pour garantir de bonnes performances~; lorsqu’un nouveau message arrive alors que la limite est atteinte, le plus ancien des 50 messages est supprimé pour faire de la place au nouveau.
-    \item Deux utilisateurs ne peuvent pas se connecter avec le même nom~: le serveur impose l’unicité des noms d’utilisateur.
+    \item L'historique des messages sur le serveur est limité à 50 messages pour garantir de bonnes performances~; lorsqu'un nouveau message arrive alors que la limite est atteinte, le plus ancien des 50 messages est supprimé pour faire de la place au nouveau.
+    \item Deux utilisateurs ne peuvent pas se connecter avec le même nom~: le serveur impose l'unicité des noms d'utilisateur.
 \end{itemize}
 
 \section{Diagramme de Classes}
@@ -126,7 +126,7 @@ docker-compose logs -f
     \begin{lstlisting}[language=bash,caption={Démarrage du client GUI sous Windows}]
 ./start-client-gui.ps1
     \end{lstlisting}
-    \item Suivez les instructions à l'écran pour vous connecter au serveur (par défaut, l'adresse est \texttt{localhost} et le port \texttt{1099}).
+    \item Suivez les instructions à l'écran pour vous connecter au serveur. L'utilisateur doit uniquement saisir son nom ; l'adresse et le port du serveur sont automatiquement récupérés depuis le fichier \texttt{config.properties}.
     \item Vous pouvez ouvrir plusieurs terminaux et lancer plusieurs clients pour simuler plusieurs utilisateurs.
 \end{enumerate}
 
