@@ -1,0 +1,55 @@
+@startuml chatSystem
+' Distributed Chat System - Class Diagram
+
+skinparam classAttributeIconSize 0
+left to right direction
+
+package "Interfaces" <<Rectangle>> {
+  interface ChatClientInterface
+  interface ChatServerInterface
+}
+
+' Main classes (middle)
+package "Main Classes" <<Rectangle>> {
+  class ChatServer {
+    - clients: Map
+    - clientNames: Map
+    - messageHistory: List
+    - lamportClock: LamportClock
+  }
+  class ChatClientGUI {
+    - frame: JFrame
+    - server: ChatServerInterface
+    - lamportClock: LamportClock
+    - messageQueue: BlockingQueue
+    - clientName: String
+    - clientId: String
+  }
+}
+
+' Helper classes (right)
+package "Helpers" <<Rectangle>> {
+  class Message {
+    - content: String
+    - senderName: String
+    - lamportTimestamp: int
+    - physicalTimestamp: LocalDateTime
+    - senderId: String
+  }
+  class LamportClock {
+    - timestamp: int
+  }
+}
+
+' Relationships
+
+ChatClientInterface <|.. ChatClientGUI
+ChatServerInterface <|.. ChatServer
+ChatServer --> LamportClock
+ChatServer --> Message
+ChatServer --> "1..*" ChatClientInterface : manages
+ChatClientGUI --> ChatServerInterface : uses
+ChatClientGUI --> LamportClock
+ChatClientGUI --> Message
+
+@enduml 

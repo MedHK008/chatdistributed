@@ -1,0 +1,30 @@
+@startuml architecture
+left to right direction
+
+actor User1
+actor User2
+actor User3
+
+' Add color to the client machines package
+package "Client Machines" #LightBlue {
+  component ClientA
+  component ClientB
+  component ClientC
+}
+
+' Add color to the Docker Host node and its container
+node "Docker Host" #LightYellow {
+  node "Docker Container" #LightGreen {
+    component ChatServer
+  }
+}
+
+User1 --> ClientA : uses
+User2 --> ClientB : uses
+User3 --> ClientC : uses
+
+ClientA ..> ChatServer : connect/send/receive/disconnect
+ClientB ..> ChatServer : connect/send/receive/disconnect
+ClientC ..> ChatServer : connect/send/receive/disconnect
+
+@enduml 
