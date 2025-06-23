@@ -62,6 +62,8 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
     private SimpleAttributeSet systemMessageStyle;
     private SimpleAttributeSet timestampStyle;
     
+    private static ChatClientGUI clientInstance;
+    
     public ChatClientGUI(String clientName) throws RemoteException {
         super();
         this.clientName = clientName;
@@ -134,14 +136,14 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
             @Override
             public void windowClosing(WindowEvent e) {
                 disconnect();
-                System.exit(0);
+                disposeWindow();
             }
         });
         
-        // Rendre la fenêtre visible
-        frame.setVisible(true);
-        messageField.requestFocus();
+       
     }
+    
+
     
     /**
      * Crée le panel du haut avec titre et informations
@@ -224,12 +226,24 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
             server = (ChatServerInterface) registry.lookup("ChatServer");
             appendSystemMessage("Serveur trouvé, inscription du client...");
             
+            // Essayer de s'inscrire avec le nom choisi
             clientId = server.registerClient(this, clientName);
+            
+            // Si le nom est déjà pris, le serveur retourne null
+            if (clientId == null) {
+                throw new RemoteException("Le nom \"" + clientName + "\" est déjà utilisé. Veuillez choisir un autre nom.");
+            }
             
             isConnected = true;
             updateStatus("Connecté au serveur", Color.GREEN);
             appendSystemMessage("Connecté au serveur avec l'ID: " + clientId);
             appendSystemMessage("Bienvenue dans le chat distribué !");
+            // Afficher la fenêtre dans l'EDT
+            SwingUtilities.invokeLater(() -> {
+                showWindow();
+                frame.requestFocus();
+                messageField.requestFocusInWindow();
+            });
             
         } catch (java.rmi.NotBoundException e) {
             updateStatus("Serveur non trouvé", Color.RED);
@@ -590,31 +604,78 @@ public class ChatClientGUI extends UnicastRemoteObject implements ChatClientInte
       /**
      * Point d'entrée principal
      */
+
+    private void disposeWindow() {
+        if (frame != null) {
+            frame.dispose();
+        }
+    }
+    
+    private void showWindow() {
+        if (frame != null) {
+            frame.setVisible(true);
+            messageField.requestFocus();
+        }
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            // Afficher la boîte de dialogue de connexion
-            ConnectionDialog dialog = new ConnectionDialog(null);
+        // Afficher la boîte de dialogue de connexion
+        ConnectionDialog dialog = new ConnectionDialog(null);
+        // Boucle pour redemander les informations de connexion en cas d'erreur
+        while (true) {
             dialog.setVisible(true);
-            
             if (dialog.isCancelled()) {
                 System.exit(0);
                 return;
             }
-            
             try {
+                String clientName = dialog.getClientName();
+                String serverHost = dialog.getServerHost();
+                int serverPort = dialog.getServerPort();
                 // Créer le client GUI
-                ChatClientGUI client = new ChatClientGUI(dialog.getClientName());
+                clientInstance = new ChatClientGUI(clientName);
+                // Essayer de se connecter
+                // Fermer l'instance précédente si elle existe
+                if (clientInstance != null) {
+                    clientInstance.disconnect();
+                    clientInstance.disposeWindow();
+                    clientInstance = null;
+                }
                 
-                // Se connecter au serveur
-                client.connectToServer(dialog.getServerHost(), dialog.getServerPort());
-                
+                try {
+                    // Créer une nouvelle instance avec le nouveau nom
+                    clientInstance = new ChatClientGUI(clientName);
+                    clientInstance.connectToServer(serverHost, serverPort);
+                    // Fermer la boîte de dialogue de connexion après succès
+                    dialog.dispose();
+                } catch (RemoteException e) {
+                    if (e.getMessage() != null && e.getMessage().contains("déjà utilisé")) {
+                        JOptionPane.showMessageDialog(dialog, 
+                            "Nom déjà utilisé. Veuillez en choisir un autre.", 
+                            "Erreur", 
+                            JOptionPane.WARNING_MESSAGE);
+                        if (clientInstance != null) {
+                            clientInstance.disposeWindow();
+                            clientInstance = null;
+                        }
+                        continue;  // Revenir au début de la boucle
+                    }
+                    throw e;
+                }
+                break; // Sortir de la boucle si la connexion réussit
+            } catch (RemoteException e) {
+                JOptionPane.showMessageDialog(dialog, 
+                    e.getMessage(), 
+                    "Erreur de connexion", 
+                    JOptionPane.WARNING_MESSAGE);
+                dialog = new ConnectionDialog(null);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, 
+                JOptionPane.showMessageDialog(dialog, 
                     "Erreur lors de la connexion: " + e.getMessage(), 
                     "Erreur", 
                     JOptionPane.ERROR_MESSAGE);
                 System.exit(1);
             }
-        });
+        }
     }
 }
